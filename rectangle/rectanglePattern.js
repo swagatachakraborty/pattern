@@ -48,13 +48,17 @@ const printRectangle = function (){
   if (rectangleHeight == 1 && rectangleWidth == 1) {
     return rectangle;
   }
-  if(rectangleType == "filled") {
-    rectangle = generateRectangle(rectangleHeight,rectangleWidth,filledLine,filledLine,filledLine);
+  switch(rectangleType){
+    case "filled" :
+      rectangle = generateRectangle(rectangleHeight,rectangleWidth,filledLine,filledLine,filledLine);
+      break;
+    case "empty" : 
+      rectangle = (generateRectangle(rectangleHeight,rectangleWidth,filledLine,hollowLine,filledLine));
+      break;
+    default : 
+      console.log("Wrong input ");
   }
-  if(rectangleType == "empty") { 
-    rectangle = (generateRectangle(rectangleHeight,rectangleWidth,filledLine,hollowLine,filledLine));
-  }
-    return rectangle;
+  return rectangle;
 }
 
 console.log(printRectangle());
