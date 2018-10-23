@@ -100,6 +100,9 @@ const recorrectHeight = function(inputHeight, diamondType) {
 }
 
 const generateDiamond = function(diamondType, diamondHeight){
+  if(isEven(diamondHeight)) {
+    diamondHeight = recorrectHeight(diamondHeight, diamondType);
+  }
   if(diamondType == "filled") { 
     return createFilledDiamond(diamondHeight);
   }
@@ -111,17 +114,4 @@ const generateDiamond = function(diamondType, diamondHeight){
   }
 }
 
-const main = function(){
-  let diamondType = process.argv[2];
-  let diamondHeight = +process.argv[3];
-  if(isEven(diamondHeight)) {
-    diamondHeight = recorrectHeight(diamondHeight, diamondType);
-  }
-  let diamond = "*";
-  if(diamondHeight > 1) {
-    diamond = generateDiamond(diamondType, diamondHeight);
-  }
-  console.log(diamond);
-}
-
-main();
+exports.generateDiamond = generateDiamond;

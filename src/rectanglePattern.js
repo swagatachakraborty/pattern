@@ -31,6 +31,9 @@ const justify=function(text,width) {
 }
 
 const generateRectangle=function(height,width,topGenerator,middleGenerator,bottomGenerator) {
+  if (height == 1 && width == 1) {
+    return "*";
+  }
   let lines=topGenerator(width);
   let delimiter="\n";
   for(let row=0;row<height-2;row++) {
@@ -40,20 +43,14 @@ const generateRectangle=function(height,width,topGenerator,middleGenerator,botto
   return lines;
 }
 
-const printRectangle = function (){
-  let rectangleType = process.argv[2]
-  let rectangleHeight = +process.argv[3];
-  let rectangleWidth = +process.argv[4];
-  let rectangle = "*";
-  if (rectangleHeight == 1 && rectangleWidth == 1) {
-    return rectangle;
-  }
+const createRectangle = function(rectangleHeight, rectangleWidth, rectangleType) {
+  let rectangle;
   switch(rectangleType){
     case "filled" :
       rectangle = generateRectangle(rectangleHeight,rectangleWidth,filledLine,filledLine,filledLine);
       break;
     case "empty" : 
-      rectangle = (generateRectangle(rectangleHeight,rectangleWidth,filledLine,hollowLine,filledLine));
+      rectangle = generateRectangle(rectangleHeight,rectangleWidth,filledLine,hollowLine,filledLine);
       break;
     default : 
       console.log("Wrong input ");
@@ -61,4 +58,4 @@ const printRectangle = function (){
   return rectangle;
 }
 
-console.log(printRectangle());
+exports.createRectangle = createRectangle;
