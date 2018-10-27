@@ -1,7 +1,7 @@
-empty|2|2
-empty|3|4
-empty|4|2
-empty|4|3
-filled|2|3
+hollow|2|2
+hollow|4|3
+hollow|2|4
+hollow|3|4
+filled|3|2
 filled|3|3
-filled|3|4
+filled|4|3
