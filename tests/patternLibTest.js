@@ -1,4 +1,4 @@
-let { generateDiamond, generateTriangle, generateRectangle } = require("./src/patternLib.js");
+let { generateDiamond, generateTriangle, generateRectangle } = require("../src/patternLib.js");
 let assert = require("assert");
 
 const checkAssert = function(func, inputs, actualOutput, expectedOutput) {

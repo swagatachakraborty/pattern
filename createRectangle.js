@@ -1,10 +1,9 @@
 let { generateRectangle } = require("./src/patternLib.js");
+let { createPatternDetails } = require("./src/utilLib.js");
 
 const main = function (){
-  let rectangleType = process.argv[2]
-  let rectangleHeight = +process.argv[3];
-  let rectangleWidth = +process.argv[4];
-  let rectangle = generateRectangle(rectangleType, rectangleHeight,rectangleWidth);
+  let details = createPatternDetails(process.argv);
+  let rectangle = generateRectangle(details.type, details.height,details.width);
   console.log( rectangle );
 }
 

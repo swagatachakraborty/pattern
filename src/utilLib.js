@@ -1,3 +1,7 @@
+const createPatternDetails  = function(details) {
+  return { type : details[2], height : +details[3], width : +details[4] }; 
+}
+
 const repeat = function(times, string) {
   let repeatedStrings = "";
   for(let charCount = 1; charCount <= times; charCount++) {
@@ -117,3 +121,4 @@ exports.reverse = reverse;
 exports.middleJustifier = middleJustifier;
 exports.createUpperHalf = createUpperHalf;
 exports.createMidLine = createMidLine;
+exports.createPatternDetails = createPatternDetails;
