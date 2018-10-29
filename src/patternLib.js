@@ -1,11 +1,11 @@
 let { createUpperHalf, middleJustifier } = require("./utilLib.js");
 let { reverse, recorrectHeight } = require("./utilLib.js");
 let { filledLine, setLineType } = require("./utilLib.js");
-let { joinLine, repeat } = require("./utilLib.js");
+let { joinLine } = require("./utilLib.js");
 let { createMidLine, setJustifierType } = require("./utilLib.js");
 
 const generateRectangle = function(type, height, width) {
-  let borderLine = repeat(width,"*");
+  let borderLine = filledLine("*")(width);
   let createLine = setLineType(type);
   let delimiter = "\n";
   let rectangle = borderLine;

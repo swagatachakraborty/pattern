@@ -118,6 +118,7 @@ const runTest = function() {
   testForFilledDiamond();
   testForHollowDiamond();
   testForAngedDiamond();
+  console.log("All tests are passing");
 }
 
 runTest();

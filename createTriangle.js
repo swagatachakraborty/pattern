@@ -1,4 +1,4 @@
-let { createPatternDetails, generateTriangle } = require("./src/patternLib.js");
+let { generateTriangle } = require("./src/patternLib.js");
 let { createPatternDetails } = require("./src/utilLib.js");
 
 const main = function(){

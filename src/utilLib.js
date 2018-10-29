@@ -1,11 +1,11 @@
 const createPatternDetails  = function(details) {
-  return { type : details[2], height : +details[3], width : +details[4] }; 
+  return { type : details[2], height : details[3], width : details[4] }; 
 }
 
 const repeat = function(times, string) {
   let repeatedStrings = "";
   for(let charCount = 1; charCount <= times; charCount++) {
-    repeatedStrings += string;
+    repeatedStrings = joinLine(repeatedStrings, string,"");
   }
   return repeatedStrings;
 }
@@ -59,12 +59,9 @@ const setJustifierType = function(type) {
 
 const setLineType = function(type) {
   switch(type) {
-    case "hollow" :
-      return hollowLine("*","*");
-    case "filled" : 
-      return filledLine("*");
-    case "angled" : 
-      return hollowLine("/","\\");
+    case "hollow" : return hollowLine("*","*");
+    case "filled" : return filledLine("*");
+    case "angled" : return hollowLine("/","\\");
   }
 }
 
@@ -72,20 +69,21 @@ const recorrectHeight = function(height, type) {
   if(height % 2 != 0 ){
     return height;
   }
-  if(type == "angled") {
-    return ++height;
+  switch ( type ) {
+    case "angled" : return ++height;
+    default : return --height;
   }
-  return --height;
+}
+
+const flip = function(element) {
+  switch( element ) {
+    case '\\' : return '/';
+    case  '/' : return '\\';
+    default : return element;
+  }
 }
 
 const reverse = function(pattern) {
-  const flip = function(element) {
-    if(element == '\\')
-      return '/';
-    if(element == '/')
-      return '\\';
-    return element;
-  }
   let flipedPattern = pattern.split("").map(flip).join("");
   let reversePattern = flipedPattern.split("\n").reverse().join("\n");
   return reversePattern;
@@ -95,7 +93,7 @@ const createUpperHalf = function(height, lineGenerator) {
   let upperTriangle = middleJustifier("*", height);
   let delimiter = "\n";
   let width = 3;
-  for(let row = 1; row <= (height - 1)/2 -1; row++) {
+  for(let row = 1; row <= (height - 1)/2 - 1; row++) {
     let line = lineGenerator(width);
     line = middleJustifier(line, height);
     upperTriangle = joinLine(upperTriangle, line, delimiter);
@@ -106,11 +104,13 @@ const createUpperHalf = function(height, lineGenerator) {
 
 const createMidLine = function(height,type) {
   if(type == "filled") {
-    return repeat(height, "*");
+    return filledLine("*")(height);
   }
-  return "*" + repeat(height-2, " ") + "*";
+  return hollowLine("*","*")(height);
 }
 
+exports.filledLine = filledLine;
+exports.hollowLine = hollowLine;
 exports.setJustifierType = setJustifierType;
 exports.repeat = repeat;
 exports.joinLine = joinLine;
@@ -121,4 +121,12 @@ exports.reverse = reverse;
 exports.middleJustifier = middleJustifier;
 exports.createUpperHalf = createUpperHalf;
 exports.createMidLine = createMidLine;
+exports.createPatternDetails = createPatternDetails;
+exports.generateLine = generateLine;
+exports.leftJustifier = leftJustifier;
+exports.rightJustifier = rightJustifier;
+exports.middleJustifier = middleJustifier;
+exports.flip = flip;
+exports.reverse = reverse;
+exports.createUpperHalf = createUpperHalf;
 exports.createPatternDetails = createPatternDetails;
