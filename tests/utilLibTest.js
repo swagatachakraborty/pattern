@@ -16,12 +16,15 @@ const checkAssert = function(func, inputs, actualOutput, expectedOutput) {
   console.log("-------------------------------------------------------------------------------------------------------");
 }
 
-const testCreatePatternDetails = function() {
-  checkAssert(createPatternDetails.name, [,, "filled", "10", "7"], createPatternDetails([,,"filled", 10, 7]), { type : "filled", height : 10, width : 7} );
-  checkAssert(createPatternDetails.name, [,, "filled", "10"], createPatternDetails([,,"filled", 10]), { type : "filled", height : 10, width : null} );
-  checkAssert(createPatternDetails.name, [,, "hollow", "10", "7"], createPatternDetails([,,"hollow", 10, 7]), { type : "hollow", height : 10, width : 7} );
-  checkAssert(createPatternDetails.name, [,, "hollow", "10"], createPatternDetails([,,"hollow", 10]), { type : "hollow", height : 10, width : null} );
-  checkAssert(createPatternDetails.name, [,, "angled", "10"], createPatternDetails([,,"angled", 10]), { type : "angled", height : 10, width : null} );
+const testCreatePatternDetailsForTwoArgs = function() {
+  checkAssert(createPatternDetails.name, [,, "filled", "10"], createPatternDetails([,,"filled", 10]), { type : "filled", height : 10, width : null});
+  checkAssert(createPatternDetails.name, [,, "hollow", "10"], createPatternDetails([,,"hollow", 10]), { type : "hollow", height : 10, width : null});
+  checkAssert(createPatternDetails.name, [,, "angled", "10"], createPatternDetails([,,"angled", 10]), { type : "angled", height : 10, width : null});
+}
+
+const testCreatePatternDetailsForThreeArgs = function() {
+  checkAssert(createPatternDetails.name, [,, "filled", "10", "7"], createPatternDetails([,,"filled", 10, 7]), { type : "filled", height : 10, width : 7});
+  checkAssert(createPatternDetails.name, [,, "hollow", "10", "7"], createPatternDetails([,,"hollow", 10, 7]), { type : "hollow", height : 10, width : 7});
 }
 
 const testRepeat = function() {
@@ -33,17 +36,25 @@ const testRepeat = function() {
 }
 
 const testFilledLine = function() {
-  checkAssert(filledLine.name,  ["('*')",  "(5)"],  filledLine("*")(5),  "*****");
-  checkAssert(filledLine.name,  ["('#')",  "(2)"],  filledLine("#")(2),  "##");
-  checkAssert(filledLine.name,  ["('#')",  "(1)"],  filledLine("#")(1),  "#");
+  const filledStarLine = filledLine("*");
+  const filledHashLine = filledLine("#");
+  checkAssert(filledLine.name,  ["('*')",  "(5)"],  filledStarLine(5),  "*****");
+  checkAssert(filledLine.name,  ["('#')",  "(2)"],  filledHashLine(2),  "##");
+  checkAssert(filledLine.name,  ["('#')",  "(1)"],  filledHashLine(1),  "#");
 }
 
-const testHollowLine = function() {
-  checkAssert(hollowLine.name, ["('*', '*')", "(2)"], hollowLine("*", "*")(2), "**");
-  checkAssert(hollowLine.name, ["('*', '#')", "(4)"], hollowLine("*", "#")(4), "*  #");
-  checkAssert(hollowLine.name, ["('*', '#')", "(5)"], hollowLine("*", "#")(5), "*   #");
+const testHollowLineForSameStartingAndEndingCharacters = function() {
+  const hollowStarLine = hollowLine("*", "*");
+  const hollowHashLine = hollowLine("#", "#");
+  checkAssert(hollowLine.name, ["('*', '*')", "(2)"], hollowStarLine(2), "**");
+  checkAssert(hollowLine.name, ["('#', '#')", "(4)"], hollowHashLine(4), "#  #");
 }
 
+const testHollowLineForDifferentStartingAndEndingCharacters = function() {
+  const hollowStarHashLine = hollowLine("*", "#");
+  checkAssert(hollowLine.name, ["('*', '#')", "(4)"], hollowStarHashLine(4), "*  #");
+  checkAssert(hollowLine.name, ["('*', '#')", "(5)"], hollowStarHashLine(5), "*   #");
+}
 const testGenerateLine = function() {
   checkAssert(generateLine.name, [0, "*", "*", "*"], generateLine(0, "*", "*", "*"), "*");
   checkAssert(generateLine.name, [1, "*", "*", "*"], generateLine(1, "*", "*", "*"), "*");
@@ -80,18 +91,25 @@ const testMiddleJustifier = function() {
   checkAssert(middleJustifier.name, ["***", 4], middleJustifier("***", 4), "***");
 }
 
-const testCreateMidLine = function() {
+const testCreateMidLineForFilledLine = function() {
   checkAssert(createMidLine.name, [9, "filled"], createMidLine(9, "filled"), "*********");
+  checkAssert(createMidLine.name, [5, "filled"], createMidLine(5, "filled"), "*****");
+}
+
+const testCreateMidLineForHollowLine = function(){
   checkAssert(createMidLine.name, [2, "hollow"], createMidLine(2, "hollow"), "**");
   checkAssert(createMidLine.name, [4, "angled"], createMidLine(4, "angled"), "*  *");
   checkAssert(createMidLine.name, [10, "hollow"], createMidLine(10, "hollow"), "*        *");
 }
 
-const testRecorrectHeight = function() {
+const testRecorrectHeightForFilledAndHollow = function() {
   checkAssert(recorrectHeight.name, [9, "filled"], recorrectHeight(9, "filled"), 9);
   checkAssert(recorrectHeight.name, [8, "filled"], recorrectHeight(8, "filled"), 7);
   checkAssert(recorrectHeight.name, [3, "hollow"], recorrectHeight(3, "hollow"), 3);
   checkAssert(recorrectHeight.name, [10, "hollow"], recorrectHeight(10, "hollow"), 9);
+}
+
+const testRecorrectHeightForAngled = function() {
   checkAssert(recorrectHeight.name, [5, "angled"], recorrectHeight(5, "angled"), 5);
   checkAssert(recorrectHeight.name, [4, "angled"], recorrectHeight(4, "angled"), 5);
 }
@@ -111,15 +129,19 @@ const testReverse = function() {
   checkAssert(reverse.name, ["**/*\\*"], reverse("**/*\\*"), "**\\*/*");
 }
 
-const testCreateUpperHalf = function() {
+const testCreateUpperHalfForFilled = function() {
   checkAssert(createUpperHalf.name, [3,"filledLine('*')"], createUpperHalf(3, filledLine("*")), " * ");
   checkAssert(createUpperHalf.name, [5,"filledLine('*')"], createUpperHalf(5, filledLine("*")), "  *  \n *** ");
   checkAssert(createUpperHalf.name, [1,"filledLine('*')"], createUpperHalf(1, filledLine("*")), "*");
+}
 
+const testCreateUpperHalfForHollow = function() {
   checkAssert(createUpperHalf.name, [3,"hollowLine('*','*')"], createUpperHalf(3, hollowLine("*", "*")), " * ");
   checkAssert(createUpperHalf.name, [5,"hollowLine('*','*')"], createUpperHalf(5, hollowLine("*", "*")), "  *  \n * * ");
   checkAssert(createUpperHalf.name, [1,"hollowLine('*','*')"], createUpperHalf(1, hollowLine("*", "*")), "*");
+}
 
+const testCreateUpperHalfForAngled = function() {
   checkAssert(createUpperHalf.name, [3,"hollowLine('/','\\')"], createUpperHalf(3, hollowLine("/", "\\")), " * ");
   checkAssert(createUpperHalf.name, [5,"hollowLine('/','\\')"], createUpperHalf(5, hollowLine("/", "\\")), "  *  \n / \\ ");
   checkAssert(createUpperHalf.name, [1,"hollowLine('/','\\')"], createUpperHalf(1, hollowLine("/", "\\")), "*");
@@ -144,11 +166,17 @@ const runTest = function() {
   testMiddleJustifier();
   console.log("middleJustifier() passing all tests.");
 
-  testCreateMidLine();
-  console.log("createMidLine() passing all tests.");
+  testCreateMidLineForFilledLine();
+  console.log("createMidLine() for filled line type passing all tests.");
 
-  testRecorrectHeight();
-  console.log("recorrectHeight() passing all tests.");
+  testCreateMidLineForHollowLine();
+  console.log("createMidLine() for hollow line type passing all tests.");
+
+  testRecorrectHeightForFilledAndHollow();
+  console.log("recorrectHeight() for filled and hollow types passing all tests.");
+
+  testRecorrectHeightForAngled();
+  console.log("recorrectHeight() for angle types passing all tests.");
 
   testFlip();
   console.log("flip() passing all tests.");
@@ -159,14 +187,26 @@ const runTest = function() {
   testFilledLine();
   console.log("filledLine() passing all tests.");
 
-  testHollowLine();
-  console.log("hollowLine() passing all tests.");
-
-  testCreateUpperHalf();
-  console.log("createUpperHalf() passing all tests.");
+  testHollowLineForSameStartingAndEndingCharacters();
+  console.log("hollowLine() for same starting and ending characters passing all tests.");
   
-  testCreatePatternDetails();
-  console.log("createPatternDetails() passing all tests.");
+  testHollowLineForDifferentStartingAndEndingCharacters();
+  console.log("hollowLine() for different starting and ending characters passing all the tests.");
+
+  testCreateUpperHalfForFilled();
+  console.log("createUpperHalf() for filled diamond passing all tests.");
+  
+  testCreateUpperHalfForHollow();
+  console.log("createUpperHalf() for hollow diamond passing all tests.");
+
+  testCreateUpperHalfForAngled();
+  console.log("createUpperHalf() for angled diamond passing all tests.");
+
+  testCreatePatternDetailsForTwoArgs();
+  console.log("createPatternDetails() for two arguments passing all tests.");
+
+  testCreatePatternDetailsForThreeArgs();
+  console.log("createPatternDetails() for three arguments passing all tests."); 
 
   console.log("\nAll functions of utilLib are passing the tests.");
 }
