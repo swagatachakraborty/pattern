@@ -3,11 +3,8 @@ const createPatternDetails  = function(details) {
 }
 
 const repeat = function(times, string) {
-  let repeatedStrings = "";
-  for(let charCount = 1; charCount <= times; charCount++) {
-    repeatedStrings = joinLine(repeatedStrings, string,"");
-  }
-  return repeatedStrings;
+  times = Math.max(times,0); 
+  return new Array(times).fill(string).join("");
 }
 
 const filledLine = function( char ) {
