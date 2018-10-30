@@ -1,11 +1,10 @@
 let assert = require("assert");
 let { repeat, generateLine } = require("../src/utilLib.js");
-let { joinLine, leftJustifier } = require("../src/utilLib.js");
-let { rightJustifier, middleJustifier } = require("../src/utilLib.js");
+let { leftJustifyIn, flip } = require("../src/utilLib.js");
+let { rightJustifyIn, middleJustifyIn } = require("../src/utilLib.js");
 let { recorrectHeight, createMidLine } = require("../src/utilLib.js");
-let { flip, reverse } = require("../src/utilLib.js");
-let { createUpperHalf, filledLine } = require("../src/utilLib.js");
-let { hollowLine, createPatternDetails } = require("../src/utilLib.js");
+let { filledLine, hollowLine } = require("../src/utilLib.js");
+let { arrayToString, createPatternDetails } = require("../src/utilLib.js");
 
 const checkAssert = function(func, inputs, actualOutput, expectedOutput) {
   let errorMessage = "Error in "+func+"()";
@@ -55,6 +54,7 @@ const testHollowLineForDifferentStartingAndEndingCharacters = function() {
   checkAssert(hollowLine.name, ["('*', '#')", "(4)"], hollowStarHashLine(4), "*  #");
   checkAssert(hollowLine.name, ["('*', '#')", "(5)"], hollowStarHashLine(5), "*   #");
 }
+
 const testGenerateLine = function() {
   checkAssert(generateLine.name, [0, "*", "*", "*"], generateLine(0, "*", "*", "*"), "*");
   checkAssert(generateLine.name, [1, "*", "*", "*"], generateLine(1, "*", "*", "*"), "*");
@@ -64,31 +64,33 @@ const testGenerateLine = function() {
   checkAssert(generateLine.name, [5, "@", "$", "!"], generateLine(5, "@", "$", "!"), "@$$$!");
 }
 
-const testJoinLine = function() {
-  checkAssert(joinLine.name, ["***", "**", "\n"], joinLine("***", "**", "\n"), "***\n**");
-  checkAssert(joinLine.name, ["**", "***", ""], joinLine("**", "***", ""), "*****");
-  checkAssert(joinLine.name, [1, "***", "\n"], joinLine(1, "***", "\n"), "1\n***");
-  checkAssert(joinLine.name, ["a", "*", "a"], joinLine("a", "*", "a"), "aa*");
-  checkAssert(joinLine.name, ["*a", "a*", "\t"], joinLine("*a", "a*", "\t"), "*a\ta*");
+const testLeftJustifyIn = function() {
+  let leftJustifier = leftJustifyIn(10);
+  checkAssert(leftJustifyIn.name, ["abc", 10], leftJustifier("abc"), "abc       ");
+  leftJustifier = leftJustifyIn(1);
+  checkAssert(leftJustifyIn.name, ["a", 1], leftJustifier("a"), "a");
+  leftJustifier = leftJustifyIn(4);
+  checkAssert(leftJustifyIn.name, ["***", 4], leftJustifier("***"), "*** ");
 }
 
-const testLeftJustifier = function() {
-  checkAssert(leftJustifier.name, ["abc", 10], leftJustifier("abc", 10), "abc       ");
-  checkAssert(leftJustifier.name, ["a", 1], leftJustifier("a", 1), "a");
-  checkAssert(leftJustifier.name, ["***", 4], leftJustifier("***", 4), "*** ");
+const testRightJustifyIn = function() {
+  let rightJustifier = rightJustifyIn(10);
+  checkAssert(rightJustifyIn.name, ["abc", 10], rightJustifier("abc"), "       abc");
+  rightJustifier = rightJustifyIn(1);
+  checkAssert(rightJustifyIn.name, ["a", 1], rightJustifier("a"), "a");
+  rightJustifier = rightJustifyIn(4);
+  checkAssert(rightJustifyIn.name, ["***", 4], rightJustifier("***"), " ***");
 }
 
-const testRightJustifier = function() {
-  checkAssert(rightJustifier.name, ["abc", 10], rightJustifier("abc", 10), "       abc");
-  checkAssert(rightJustifier.name, ["a", 1], rightJustifier("a", 1), "a");
-  checkAssert(rightJustifier.name, ["***", 4], rightJustifier("***", 4), " ***");
-}
-
-const testMiddleJustifier = function() {
-  checkAssert(middleJustifier.name, ["abc", 10], middleJustifier("abc", 10), "   abc   ");
-  checkAssert(middleJustifier.name, ["a", 1], middleJustifier("a", 1), "a");
-  checkAssert(middleJustifier.name, ["a", 7], middleJustifier("a", 7), "   a   ");
-  checkAssert(middleJustifier.name, ["***", 4], middleJustifier("***", 4), "***");
+const testMiddleJustifyIn = function() {
+  let middleJustifier = middleJustifyIn(10);
+  checkAssert(middleJustifyIn.name, ["abc", 10], middleJustifier("abc"), "   abc   ");
+  middleJustifier = middleJustifyIn(1);
+  checkAssert(middleJustifyIn.name, ["a", 1], middleJustifier("a"), "a");
+  middleJustifier = middleJustifyIn(7);
+  checkAssert(middleJustifyIn.name, ["a", 7], middleJustifier("a"), "   a   ");
+  middleJustifier = middleJustifyIn(4);
+  checkAssert(middleJustifyIn.name, ["***", 4], middleJustifier("***"), "***");
 }
 
 const testCreateMidLineForFilledLine = function() {
@@ -117,34 +119,16 @@ const testRecorrectHeightForAngled = function() {
 const testFlip = function() {
   checkAssert(flip.name, ["*"], flip("*"), "*");
   checkAssert(flip.name, [9], flip(9), 9);
-  checkAssert(flip.name, ["/"], flip("/"), "\\");
-  checkAssert(flip.name, ["\\"], flip("\\"), "/");
-  checkAssert(flip.name, ["**"], flip("**"), "**");
+  checkAssert(flip.name, ["/"], flip("/"), "/");
+  checkAssert(flip.name, ["\\"], flip("\\"), "\\");
+  checkAssert(flip.name, ["**\\"], flip("**\\"), "\\**");
 }
 
-const testReverse = function() {
-  checkAssert(reverse.name, ["*"], reverse("*"), "*");
-  checkAssert(reverse.name, ["*\n /0"], reverse("*\n /0"), " \\0\n*");
-  checkAssert(reverse.name, ["sw\n\\ag"], reverse("sw\n\\ag"), "/ag\nsw");
-  checkAssert(reverse.name, ["**/*\\*"], reverse("**/*\\*"), "**\\*/*");
-}
-
-const testCreateUpperHalfForFilled = function() {
-  checkAssert(createUpperHalf.name, [3,"filledLine('*')"], createUpperHalf(3, filledLine("*")), " * ");
-  checkAssert(createUpperHalf.name, [5,"filledLine('*')"], createUpperHalf(5, filledLine("*")), "  *  \n *** ");
-  checkAssert(createUpperHalf.name, [1,"filledLine('*')"], createUpperHalf(1, filledLine("*")), "*");
-}
-
-const testCreateUpperHalfForHollow = function() {
-  checkAssert(createUpperHalf.name, [3,"hollowLine('*','*')"], createUpperHalf(3, hollowLine("*", "*")), " * ");
-  checkAssert(createUpperHalf.name, [5,"hollowLine('*','*')"], createUpperHalf(5, hollowLine("*", "*")), "  *  \n * * ");
-  checkAssert(createUpperHalf.name, [1,"hollowLine('*','*')"], createUpperHalf(1, hollowLine("*", "*")), "*");
-}
-
-const testCreateUpperHalfForAngled = function() {
-  checkAssert(createUpperHalf.name, [3,"hollowLine('/','\\')"], createUpperHalf(3, hollowLine("/", "\\")), " * ");
-  checkAssert(createUpperHalf.name, [5,"hollowLine('/','\\')"], createUpperHalf(5, hollowLine("/", "\\")), "  *  \n / \\ ");
-  checkAssert(createUpperHalf.name, [1,"hollowLine('/','\\')"], createUpperHalf(1, hollowLine("/", "\\")), "*");
+const testArrayToSrting = function() {
+  checkAssert(arrayToString.name, [1,2,3], arrayToString([1,2,3]), "1\n2\n3");
+  checkAssert(arrayToString.name, ["*","***","**"], arrayToString(["*","***","**"]), "*\n***\n**");
+  checkAssert(arrayToString.name, ["*##*"], arrayToString(["*##*"]), "*##*");
+  checkAssert(arrayToString.name, [,"*#",], arrayToString([,"*##*",]), "\n*##*");
 }
 
 const runTest = function() {
@@ -154,17 +138,14 @@ const runTest = function() {
   testGenerateLine();
   console.log("generateLine() passing all tests.");
 
-  testJoinLine();
-  console.log("joinLine() passing all tests.");
+  testLeftJustifyIn();
+  console.log("leftJustifyIn() passing all tests.");
 
-  testLeftJustifier();
-  console.log("leftJustifier() passing all tests.");
+  testRightJustifyIn();
+  console.log("rightJustifyIn() passing all tests.");
 
-  testRightJustifier();
-  console.log("rightJustifier() passing all tests.");
-
-  testMiddleJustifier();
-  console.log("middleJustifier() passing all tests.");
+  testMiddleJustifyIn();
+  console.log("middleJustifyIn() passing all tests.");
 
   testCreateMidLineForFilledLine();
   console.log("createMidLine() for filled line type passing all tests.");
@@ -181,9 +162,6 @@ const runTest = function() {
   testFlip();
   console.log("flip() passing all tests.");
 
-  testReverse();
-  console.log("reverse() passing all tests.");
-
   testFilledLine();
   console.log("filledLine() passing all tests.");
 
@@ -193,20 +171,14 @@ const runTest = function() {
   testHollowLineForDifferentStartingAndEndingCharacters();
   console.log("hollowLine() for different starting and ending characters passing all the tests.");
 
-  testCreateUpperHalfForFilled();
-  console.log("createUpperHalf() for filled diamond passing all tests.");
-  
-  testCreateUpperHalfForHollow();
-  console.log("createUpperHalf() for hollow diamond passing all tests.");
-
-  testCreateUpperHalfForAngled();
-  console.log("createUpperHalf() for angled diamond passing all tests.");
-
   testCreatePatternDetailsForTwoArgs();
   console.log("createPatternDetails() for two arguments passing all tests.");
 
   testCreatePatternDetailsForThreeArgs();
   console.log("createPatternDetails() for three arguments passing all tests."); 
+
+  testArrayToSrting();
+  console.log("testArrayToSrting() passing all the rest.");
 
   console.log("\nAll functions of utilLib are passing the tests.");
 }
