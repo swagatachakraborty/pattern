@@ -3,7 +3,7 @@ const arrayToString = function(patternArray) {
 }
 
 const createPatternDetails  = function(details) {
-  return { type : details[2], height : details[3], width : details[4] }; 
+  return { 1 : details[2], 2 : details[3], 3 : details[4] }; 
 }
 
 const repeat = function(times, string) {
@@ -24,10 +24,26 @@ const computeCharsOnLine = function(justifierType) {
   }
 }
 
+const generateListOfStarsInTriangle = function(height,type) {
+  let computeStarsInRow = computeCharsOnLine(type);
+  return new Array(height).fill(0).map(computeStarsInRow);
+}
+
 const filledLine = function( char ) {
   return function(width) {
     return generateLine(width, char, char, char);
   }
+}
+
+const createBorder = function(times, width) {
+  let createLine = filledLine("*");
+  return new Array(times).fill( width ).map(createLine);
+
+}
+
+const createMiddlePart = function(starsInRows, lineType ) {
+  let createLine = setLineType(lineType);
+  return starsInRows.map(createLine);
 }
 
 const hollowLine = function(leftChar, rightChar) {
@@ -115,3 +131,6 @@ exports.middleJustifyIn = middleJustifyIn;
 exports.flip = flip;
 exports.computeCharsOnLine = computeCharsOnLine;
 exports.arrayToString = arrayToString;
+exports.generateListOfStarsInTriangle = generateListOfStarsInTriangle;
+exports.createBorder = createBorder;
+exports.createMiddlePart = createMiddlePart;

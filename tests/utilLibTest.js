@@ -5,6 +5,8 @@ let { rightJustifyIn, middleJustifyIn } = require("../src/utilLib.js");
 let { recorrectHeight, createMidLine } = require("../src/utilLib.js");
 let { filledLine, hollowLine } = require("../src/utilLib.js");
 let { arrayToString, createPatternDetails } = require("../src/utilLib.js");
+let { generateListOfStarsInTriangle } = require("../src/utilLib.js"); 
+let { createBorder, createMiddlePart } = require("../src/utilLib.js");
 
 const checkAssert = function(func, inputs, actualOutput, expectedOutput) {
   let errorMessage = "Error in "+func+"()";
@@ -15,15 +17,40 @@ const checkAssert = function(func, inputs, actualOutput, expectedOutput) {
   console.log("-------------------------------------------------------------------------------------------------------");
 }
 
+const testingGenerateListOfStarsInTriangleForLeftAndRightAlign = function() {
+  checkAssert(generateListOfStarsInTriangle.name, [1, "left"], generateListOfStarsInTriangle(1, "left"), [1]);
+  checkAssert(generateListOfStarsInTriangle.name, [1, "right"], generateListOfStarsInTriangle(1, "right"), [1]);
+  checkAssert(generateListOfStarsInTriangle.name, [4, "left"], generateListOfStarsInTriangle(4, "left"), [1,2,3,4]);
+  checkAssert(generateListOfStarsInTriangle.name, [4, "right"], generateListOfStarsInTriangle(4, "right"), [1,2,3,4]);
+}
+
+const testingGenerateListOfStarsInTriangleForMiddleAlign = function() {
+  checkAssert(generateListOfStarsInTriangle.name, [1, "middle"], generateListOfStarsInTriangle(1, "middle"), [1]);
+  checkAssert(generateListOfStarsInTriangle.name, [4, "middle"], generateListOfStarsInTriangle(4, "middle"), [1,3,5,7]);
+  checkAssert(generateListOfStarsInTriangle.name, [5, "middle"], generateListOfStarsInTriangle(5, "middle"), [1,3,5,7,9]);
+}
+
+const testCreateBorder = function() {
+  checkAssert(createBorder.name, [1, 4], createBorder(1, 4), ["****"]);
+  checkAssert(createBorder.name, [0, 6], createBorder(0, 6), []);
+}
+
+const testCreateMiddlePart = function() {
+  checkAssert(createMiddlePart.name, [[1,2,3,4], "left"], createMiddlePart([1,2,3,4], "left"), ["*", "**", "***", "****"]);
+  checkAssert(createMiddlePart.name, [[], "left"], createMiddlePart([],"left"), []);
+  checkAssert(createMiddlePart.name, [[2,2,2,2], "right"], createMiddlePart([2,2,2,2], "right"), ["**", "**", "**", "**"]);
+  checkAssert(createMiddlePart.name, [[], "right"], createMiddlePart([],"right"), []);
+}
+
 const testCreatePatternDetailsForTwoArgs = function() {
-  checkAssert(createPatternDetails.name, [,, "filled", "10"], createPatternDetails([,,"filled", 10]), { type : "filled", height : 10, width : null});
-  checkAssert(createPatternDetails.name, [,, "hollow", "10"], createPatternDetails([,,"hollow", 10]), { type : "hollow", height : 10, width : null});
-  checkAssert(createPatternDetails.name, [,, "angled", "10"], createPatternDetails([,,"angled", 10]), { type : "angled", height : 10, width : null});
+  checkAssert(createPatternDetails.name, [,, "filled", "10"], createPatternDetails([,,"filled", 10]), { 1 : "filled", 2 : 10, 3 : null});
+  checkAssert(createPatternDetails.name, [,, "hollow", "10"], createPatternDetails([,,"hollow", 10]), { 1 : "hollow", 2 : 10, 3 : null});
+  checkAssert(createPatternDetails.name, [,, "angled", "10"], createPatternDetails([,,"angled", 10]), { 1 : "angled", 2 : 10, 3 : null});
 }
 
 const testCreatePatternDetailsForThreeArgs = function() {
-  checkAssert(createPatternDetails.name, [,, "filled", "10", "7"], createPatternDetails([,,"filled", 10, 7]), { type : "filled", height : 10, width : 7});
-  checkAssert(createPatternDetails.name, [,, "hollow", "10", "7"], createPatternDetails([,,"hollow", 10, 7]), { type : "hollow", height : 10, width : 7});
+  checkAssert(createPatternDetails.name, [,, "filled", "10", "7"], createPatternDetails([,,"filled", 10, 7]), { 1 : "filled", 2 : 10, 3 : 7});
+  checkAssert(createPatternDetails.name, [,, "hollow", "10", "7"], createPatternDetails([,,"hollow", 10, 7]), { 1 : "hollow", 2 : 10, 3 : 7});
 }
 
 const testRepeat = function() {
@@ -179,6 +206,15 @@ const runTest = function() {
 
   testArrayToSrting();
   console.log("testArrayToSrting() passing all the rest.");
+
+  testingGenerateListOfStarsInTriangleForLeftAndRightAlign();
+  console.log("generateListOfStarsInTriangle is passing for left and right align triangle");
+
+  testingGenerateListOfStarsInTriangleForMiddleAlign();
+  console.log("generateListOfStarsInTriangle() is passing for middle align triangle");
+
+  testCreateBorder();
+  console.log("createBorder() is passing all tests.");
 
   console.log("\nAll functions of utilLib are passing the tests.");
 }
