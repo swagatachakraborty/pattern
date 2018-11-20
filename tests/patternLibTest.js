@@ -503,6 +503,190 @@ const testForMiddleAngledTriangle = function() {
  
 //----------------------------------------------------------------------------------------------------------------------------
 
+const testCreatePatternForRectAndTriangleWithoutAction = function() {
+  let name = createPattern.name;
+  let actualOutput = createPattern(filled_rectangle,20,7,left_filled_triangle,7);
+  let expectedOutput = "******************** *      \n";
+  expectedOutput += "******************** **     \n";
+  expectedOutput += "******************** ***    \n";
+  expectedOutput += "******************** ****   \n";
+  expectedOutput += "******************** *****  \n";
+  expectedOutput += "******************** ****** \n";
+  expectedOutput += "******************** *******";
+  checkAssert(name,"filled_rectangle,20,7,left_filled_triangle,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(right_hollow_triangle,7,hollow_rectangle,10,7);
+  expectedOutput = "      * **********\n";
+  expectedOutput += "     ** *        *\n";
+  expectedOutput += "    * * *        *\n";
+  expectedOutput += "   *  * *        *\n";
+  expectedOutput += "  *   * *        *\n";
+  expectedOutput += " *    * *        *\n";
+  expectedOutput += "******* **********";
+  checkAssert(name,"right_hollow_triangle,7,hollow_rectangle,10,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(middle_angled_triangle,7,hollow_rectangle,10,7);
+  expectedOutput =  "      *       **********\n";
+  expectedOutput += "     / \\      *        *\n";
+  expectedOutput += "    /   \\     *        *\n";
+  expectedOutput += "   /     \\    *        *\n";
+  expectedOutput += "  /       \\   *        *\n";
+  expectedOutput += " /         \\  *        *\n";
+  expectedOutput += "************* **********";
+  checkAssert(name,"right_hollow_triangle,7,hollow_rectangle,10,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(filled_rectangle,10,7,middle_angled_triangle,7);
+  expectedOutput =  "**********       *      \n";
+  expectedOutput += "**********      / \\    \n";
+  expectedOutput += "**********     /   \\   \n";
+  expectedOutput += "**********    /     \\  \n";
+  expectedOutput += "**********   /       \\ \n";
+  expectedOutput += "**********  /         \\\n";
+  expectedOutput += "********** *************";
+  checkAssert(name,"filled_rectangle,10,7,middle_angled_triangle,7",actualOutput,expectedOutput);
+}
+
+const testCreatePatternForRectAndTriangleWithAction = function() {
+  let name = createPattern.name;
+  let actualOutput = createPattern(flip,filled_rectangle,20,7,right_filled_triangle,7);
+  let expectedOutput = "******************** *      \n";
+  expectedOutput += "******************** **     \n";
+  expectedOutput += "******************** ***    \n";
+  expectedOutput += "******************** ****   \n";
+  expectedOutput += "******************** *****  \n";
+  expectedOutput += "******************** ****** \n";
+  expectedOutput += "******************** *******";
+  checkAssert(name,"filled_rectangle,20,7,right_filled_triangle,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(flip,left_hollow_triangle,7,hollow_rectangle,10,7);
+  expectedOutput = "      * **********\n";
+  expectedOutput += "     ** *        *\n";
+  expectedOutput += "    * * *        *\n";
+  expectedOutput += "   *  * *        *\n";
+  expectedOutput += "  *   * *        *\n";
+  expectedOutput += " *    * *        *\n";
+  expectedOutput += "******* **********";
+  checkAssert(name,"flip,left_hollow_triangle,7,hollow_rectangle,10,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(flip,middle_angled_triangle,7,hollow_rectangle,10,7);
+  expectedOutput  = "      *       **********\n";
+  expectedOutput += "     / \\      *        *\n";
+  expectedOutput += "    /   \\     *        *\n";
+  expectedOutput += "   /     \\    *        *\n";
+  expectedOutput += "  /       \\   *        *\n";
+  expectedOutput += " /         \\  *        *\n";
+  expectedOutput += "************* **********";
+  checkAssert(name,"flip,right_hollow_triangle,7,hollow_rectangle,10,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(mirror,filled_rectangle,10,7,middle_angled_triangle,7);
+  expectedOutput  = "********** *************\n";
+  expectedOutput += "**********  \\         / \n";
+  expectedOutput += "**********   \\       /  \n";
+  expectedOutput += "**********    \\     /   \n";
+  expectedOutput += "**********     \\   /    \n";
+  expectedOutput += "**********      \\ /    \n";
+  expectedOutput += "**********       *      ";
+  checkAssert(name,"filled_rectangle,10,7,middle_angled_triangle,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(mirror,right_filled_triangle,7,hollow_rectangle,10,7);
+  expectedOutput =  "******* **********\n";
+  expectedOutput += " ****** *        *\n";
+  expectedOutput += "  ***** *        *\n";
+  expectedOutput += "   **** *        *\n";
+  expectedOutput += "    *** *        *\n";
+  expectedOutput += "     ** *        *\n";
+  expectedOutput += "      * **********";
+  checkAssert(name,"mirror,right_filled_triangle,7,hollow_rectangle,10,7",actualOutput,expectedOutput);
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+const testCreatePatternForTwoTrianglesWithoutAction = function() {
+  let name = createPattern.name;
+  let actualOutput = createPattern(left_filled_triangle,6,left_filled_triangle,6);
+  let expectedOutput = "*       *     \n";
+  expectedOutput += "**      **    \n";
+  expectedOutput += "***     ***   \n";
+  expectedOutput += "****    ****  \n";
+  expectedOutput += "*****   ***** \n";
+  expectedOutput += "******  ******";
+  checkAssert(name,"left_filled_triangle,6,left_filled_triangle,6",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(right_hollow_triangle,7,left_angled_triangle,7);
+  expectedOutput = "      * *      \n";
+  expectedOutput += "     ** /\\     \n";
+  expectedOutput += "    * * / \\    \n";
+  expectedOutput += "   *  * /  \\   \n";
+  expectedOutput += "  *   * /   \\  \n";
+  expectedOutput += " *    * /    \\ \n";
+  expectedOutput += "******* *******";
+  checkAssert(name,"right_hollow_triangle,7,left_angled_triangle,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(middle_angled_triangle,7,right_hollow_triangle,7);
+  expectedOutput =  "      *             *\n";
+  expectedOutput += "     /\\           **\n";
+  expectedOutput += "    /  \\         * *\n";
+  expectedOutput += "   /    \\       *  *\n";
+  expectedOutput += "  /      \\     *   *\n";
+  expectedOutput += " /        \\   *    *\n";
+  expectedOutput += "************ *******";
+  checkAssert(name,"middle_angled_triangle,7,right_hollow_triangle,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(middle_filled_triangle,7,middle_angled_triangle,7);
+  expectedOutput = "      *            *      \n";
+  expectedOutput += "     **           /\\     \n";
+  expectedOutput += "    ****         /  \\    \n";
+  expectedOutput += "   ******       /    \\   \n";
+  expectedOutput += "  ********     /      \\  \n";
+  expectedOutput += " **********   /        \\ \n";
+  expectedOutput += "************ ************";
+  checkAssert(name,"middle_filled_triangle,7,middle_angled_triangle,7",actualOutput,expectedOutput);
+}
+
+const testCreatePatternForTwoTrianglesWithAction = function() {
+  let name = createPattern.name;
+  let actualOutput = createPattern(flipm,right_filled_triangle,6,right_filled_triangle,6);
+  let expectedOutput = "*       *     \n";
+  expectedOutput += "**      **    \n";
+  expectedOutput += "***     ***   \n";
+  expectedOutput += "****    ****  \n";
+  expectedOutput += "*****   ***** \n";
+  expectedOutput += "******  ******";
+  checkAssert(name,"flip,right_filled_triangle,6,right_filled_triangle,6",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(flip,left_hollow_triangle,7,right_angled_triangle,7);
+  expectedOutput = "      * *      \n";
+  expectedOutput += "     ** /\\     \n";
+  expectedOutput += "    * * / \\    \n";
+  expectedOutput += "   *  * /  \\   \n";
+  expectedOutput += "  *   * /   \\  \n";
+  expectedOutput += " *    * /    \\ \n";
+  expectedOutput += "******* *******";
+  checkAssert(name,"left_hollow_triangle,7,right_angled_triangle,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(mirror,middle_angled_triangle,7,right_hollow_triangle,7);
+  expectedOutput =  "************* *******\n";
+  expectedOutput += " \\         /   *    *\n";
+  expectedOutput += "  \\       /     *   *\n";
+  expectedOutput += "   \\     /       *  *\n";
+  expectedOutput += "    \\   /         * *\n";
+  expectedOutput += "     \\ /           **\n";
+  expectedOutput += "      *             *";
+  checkAssert(name,"mirror,middle_angled_triangle,7,right_hollow_triangle,7",actualOutput,expectedOutput);
+
+  actualOutput = createPattern(mirror,middle_filled_triangle,7,middle_angled_triangle,7);
+  expectedOutput =  "************* *************\n";
+  expectedOutput += " ***********   \\         / \n";
+  expectedOutput += "  *********     \\       /  \n";
+  expectedOutput += "   *******       \\     /   \n";
+  expectedOutput += "    *****         \\   /    \n";
+  expectedOutput += "     ***           \\ /     \n";
+  expectedOutput += "      *             *      ";
+  checkAssert(name,"mirror,middle_filled_triangle,7,middle_angled_triangle,7",actualOutput,expectedOutput);
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
 const runTest = function() {
   testForFilledRectangle(); 
   testForhollowRectangle();
@@ -523,13 +707,17 @@ const runTest = function() {
   testForRightFilledTriangle();
   testForRightHollowTriangle();
   testForRightAngledTriangle();
-  
 
   testForFilledDiamond();
   testForHollowDiamond();
   testForAngedDiamond();
   testDiamondForHeightOne();
 
+  testCreatePatternForRectAndTriangleWithoutAction();
+  testCreatePatternForRectAndTriangleWithAction();
+  testCreatePatternForTwoTrianglesWithoutAction();
+  testCreatePatternForTwoTrianglesWithAction();
+  
   console.log("All tests are passing");
 }
 
